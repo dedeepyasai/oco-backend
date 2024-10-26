@@ -4,12 +4,21 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 10000;
 
-// MongoDB connection URL with different SSL settings
-const mongoUrl = "mongodb+srv://dattasai2511:JOytKbJ6V9PXyn08@waitlist-emails.mhip8.mongodb.net/?retryWrites=true&w=majority&appName=waitlist-emails&tls=true&tlsInsecure=true";
+// MongoDB connection details
+const mongoUrl = "mongodb+srv://dattasai2511:JOytKbJ6V9PXyn08@waitlist-emails.mhip8.mongodb.net/?retryWrites=true&w=majority&appName=waitlist-emails";
 const dbName = 'OCO_DB';
 const collectionName = 'wailistEmails';
+
+// Middleware
+app.use(express.json());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type'],
+    optionsSuccessStatus: 200
+}));
 
 // MongoDB Connection Pool
 let client;
@@ -24,16 +33,10 @@ async function connectDB() {
                     strict: true,
                     deprecationErrors: true
                 },
-                ssl: true,
-                tls: true,
-                tlsAllowInvalidCertificates: true, // Only use this in development
                 maxPoolSize: 10,
-                serverSelectionTimeoutMS: 10000 // Increased timeout
+                serverSelectionTimeoutMS: 5000
             });
-            
-            // Test the connection
-            await client.db('admin').command({ ping: 1 });
-            console.log('Connected successfully to MongoDB');
+            console.log('Connected to MongoDB');
         }
         return client;
     } catch (error) {
@@ -41,24 +44,6 @@ async function connectDB() {
         throw error;
     }
 }
-
-// Add connection error handlers
-process.on('unhandledRejection', error => {
-    console.error('Unhandled Promise Rejection:', error);
-    if (client) {
-        client.close().then(() => {
-            console.log('MongoDB connection closed due to error');
-        });
-    }
-});
-
-// Configuration endpoint
-app.get('/api/config', (req, res) => {
-    res.json({
-        apiUrl: API_URL,
-        environment: isDevelopment ? 'development' : 'production'
-    });
-});
 
 // Health check endpoint
 app.get('/health', async (req, res) => {
@@ -68,25 +53,21 @@ app.get('/health', async (req, res) => {
             status: 'healthy',
             server: 'running',
             database: 'connected',
-            environment: isDevelopment ? 'development' : 'production',
-            apiUrl: API_URL,
             timestamp: new Date()
         });
     } catch (error) {
         res.status(500).json({ 
             status: 'unhealthy',
-            error: 'Database connection failed',
-            environment: isDevelopment ? 'development' : 'production'
+            error: 'Database connection failed'
         });
     }
 });
 
-// API endpoint to add email - THIS WAS MISSING
+// Add email to waitlist
 app.post('/api/waitlist', async (req, res) => {
     const { email } = req.body;
 
-    // Input validation
-    if (!email || !email.includes('@')) {
+    if (!email) {
         return res.status(400).json({ error: 'Please provide a valid email address.' });
     }
 
@@ -120,7 +101,7 @@ app.post('/api/waitlist', async (req, res) => {
     }
 });
 
-// API endpoint to fetch emails - THIS WAS MISSING
+// Fetch all emails
 app.get('/api/waitlist', async (req, res) => {
     try {
         const dbClient = await connectDB();
@@ -145,7 +126,7 @@ app.get('/api/waitlist', async (req, res) => {
     }
 });
 
-// Global error handler - THIS WAS MISSING
+// Error handling middleware
 app.use((err, req, res, next) => {
     console.error('Unhandled error:', err);
     res.status(500).json({ error: 'Internal server error' });
@@ -161,8 +142,7 @@ const startServer = async () => {
             
             app.listen(port, () => {
                 console.log(`Server is running on port ${port}`);
-                console.log(`Environment: ${isDevelopment ? 'development' : 'production'}`);
-                console.log(`API URL: ${API_URL}`);
+                console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
             });
             
             break;
@@ -175,7 +155,7 @@ const startServer = async () => {
     }
 };
 
-// Graceful shutdown handler - THIS WAS MISSING
+// Graceful shutdown handler
 process.on('SIGTERM', async () => {
     console.log('SIGTERM received. Shutting down gracefully...');
     if (client) {
@@ -184,10 +164,23 @@ process.on('SIGTERM', async () => {
     process.exit(0);
 });
 
-// Handle uncaught exceptions - THIS WAS MISSING
+// Error handlers
 process.on('uncaughtException', (error) => {
     console.error('Uncaught Exception:', error);
-    process.exit(1);
+    if (client) {
+        client.close().then(() => process.exit(1));
+    } else {
+        process.exit(1);
+    }
+});
+
+process.on('unhandledRejection', (error) => {
+    console.error('Unhandled Rejection:', error);
+    if (client) {
+        client.close().then(() => process.exit(1));
+    } else {
+        process.exit(1);
+    }
 });
 
 // Start the server
