@@ -14,6 +14,7 @@
     }
     .section-padding{
         padding: 30px;
+        background: linear-gradient(270deg, #E1EFF5 0%, #E3F4FA 50%, #EEF8FB 100%);
     }
     button.project-button-1{
         margin-bottom: 20px;

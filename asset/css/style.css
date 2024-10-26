@@ -21,15 +21,17 @@ a:hover{
 }
 .section-padding{
     padding: 70px;
+    background: linear-gradient(270deg, #E1EFF5 0%, #E3F4FA 50%, #EEF8FB 100%);
+    /* min-height: 100vh; */
 }
 /* Adding Fonts*/
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Roboto:wght@400;500&display=swap');
 
-.header{
+/* .header{
     background: linear-gradient(-40deg, #39b0f0, #fff);
     
-}
+} */
 
 /* Header Navigation Styles */
 .header-nav {
@@ -363,9 +365,9 @@ a.carousel-control-next.testimonial-control {
 
 /* Footer Styles */
 
-.footer{
+/* .footer{
     background: linear-gradient(30deg, #39b0f0, #fff);
-}
+} */
 section.footer.section-padding {
     padding-bottom: 10px;
 }

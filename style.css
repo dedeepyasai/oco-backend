@@ -24,7 +24,6 @@
   
   /* Header Styles */
   header {
-    background-color: #0077B6;
     padding: 20px 0;
   }
   
@@ -207,7 +206,7 @@
   
 
 footer {
-    background-color: #0077B6;
+    /* background-color: #0077B6; */
     color: #FFFFFF;
     padding: 30px 0;
   }
