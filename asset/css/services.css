@@ -1,0 +1,283 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+html,body{
+    height: 100%;
+    font-family:sans-serif;
+    scroll-behavior: smooth;
+}
+a:hover{
+    text-decoration: none;
+}
+.section-padding{
+    padding: 70px;
+}
+/* Adding Fonts*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Roboto:wght@400;500&display=swap');
+
+.header{
+    background: linear-gradient(-40deg, #39b0f0, #fff);
+    height: auto;
+}
+
+/* Header Navigation Styles */
+.header-nav {
+    min-height: 90px;
+}
+.navbar-brand img{
+    width: 100%;
+    height: auto;
+}
+.main-menu ul li{
+    margin-left: 26px;
+    text-align: center;
+}
+.main-menu ul li a{
+    font-family: 'Poppins', sans-serif;
+    color: #070A57;
+    font-weight: 500;
+    font-size: 16px;
+}
+.main-menu ul li:hover{
+    transform: scale(1.1);
+    transition: 0.5s all ease;
+}
+button.nav-button{
+    background-color: #39b0f0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    padding: 5px 10px;
+    border: none;
+    vertical-align: middle;
+    margin-top: -5px;
+    border-radius: 5px;
+}
+
+/* Header Banner Area Styles */
+
+.container.header-content {
+    height: 100%;
+}
+.highlight{
+    color: #39b0f0;
+}
+.left-content h2 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 60px;
+    font-weight: 500;
+    color: #070A57;
+}
+.centralize{
+    display: flex;
+    align-items: center;
+}
+.left-content p {
+    font-family: 'Roboto',sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #64707D;
+}
+.call-to-action button {
+    background: #39b0f0;
+    border: none;
+    font-family: 'Roboto',sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 10px 10px;
+}
+.call-to-action button:hover{
+    transform: scale(1.1);
+    transition: 0.5s all ease;
+    cursor: pointer;
+}
+
+.call-to-action a {
+    font-family: 'Roboto',sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #39b0f0;
+    text-decoration: underline;
+    margin-left: 30px;
+}
+
+.right-content img{
+    width: auto;
+    height: 25rem;
+    padding-left: 30px;
+}
+
+/* Services styles  */
+.services{
+    background: linear-gradient(30deg, #FBF1D5, #fff);
+}
+.service-heading {
+    font-family: 'Roboto',sans-serif;
+    font-size: 45px;
+    font-weight: 500;
+    color: #070A57;
+}
+section.services {
+    text-align: center;
+}
+.card-row-gap {
+    padding-bottom: 2rem;
+}
+.card-body{
+background-color: #ffebef;
+
+}
+a.card-body{
+    text-decoration: underline;
+}
+
+/* why choose leadsbee */
+
+.service-type-gap {
+ padding-bottom: 8rem;
+}
+h2.col-md-6 {
+    padding-bottom: 3rem;
+    padding-top: 2rem;
+}
+
+/* lets start */
+
+
+
+/* Footer Styles */
+
+.footer{
+    background: linear-gradient(30deg, #39b0f0, #fff);
+}
+.footer-widget-1 p {
+    font-family: 'Roboto',sans-serif;
+    font-size: 18px;
+    line-height: 35px;
+    margin-top: 20px;
+    text-align: center;
+}
+.footer-widget-2 h3,.footer-widget-3 h3 {font-family: 'Roboto',sans-serif;font-size: 26px;font-weight: 500;line-height: 35px;}
+
+.footer-widget-2 ul li,.footer-widget-3 ul li {
+    list-style: none;
+    padding: 5px;
+}
+
+.footer-widget-2 ul li a,.footer-widget-3 ul li a {
+    font-family: 'Roboto',sans-serif;
+    font-size: 18px;
+    line-height: 40px;
+    color: #64707D;
+}
+.footer-widget-4 p{
+    font-family: 'Roboto',sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 40px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+.footer-widget-4 ul li{
+    list-style-type: none;
+    display: inline;
+    padding: 5px 10px;
+    font-size: 27px;
+}
+.footer-widget-4 ul li a {
+    color: #DDDDDD;
+}
+
+.footer-widget-4 ul li a:hover {
+    color: #39b0f0;
+    transition: all 0.5s ease-in-out;
+}
+/* Waitlist form styles */
+.join-waitlist {
+    max-width: 100%;
+    margin-top: 20px;
+}
+
+.input-button-wrapper {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.waitlist-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.waitlist-btn {
+    white-space: nowrap;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.waitlist-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Message styles */
+.error-message,
+.success-message {
+    width: 100%;
+    display: none;
+    font-size: 14px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-align: left;
+    align-items: center;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.error-message {
+    color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+.success-message {
+    color: #28a745;
+    background-color: rgba(40, 167, 69, 0.1);
+}
+
+.success-message i, 
+.error-message i {
+    margin-right: 8px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .input-button-wrapper {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .waitlist-btn {
+        width: 100%;
+    }
+
+    .waitlist-input {
+        width: 100%;
+    }
+}

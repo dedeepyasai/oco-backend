@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waitlist Emails</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Waitlist Emails</h1>
+  <div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <table id="email-table">
+                <thead>
+                  <tr>
+                    <th>Email</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+        </div>
+    </div>
+  </div>
+    <section id="footer" class="footer section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="footer-widget-1">
+                        <img src="./asset/image/Logo.png" alt="">
+                        <p>
+                            Lorem ipsum dolor sit, consectet dignissim.consectet adipiscing Cras dignissim.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="footer-widget-3">
+                        <h3>OCO.AI</h3>
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Team</a></li>
+                            <li><a href="#">Testimonial</a></li>
+                            <li><a href="#">FAQ's</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="footer-widget-4">
+                        <h3>Contact Us</h3>
+                        <p>
+                            info@leadsbee.com <br> 07/409 Jiangxi China
+                        </p>
+                    </div>
+                </div>
+            </div>
+			
+			<div class="row" style="border-top: 1px solid #ddd; padding-top: 10px;">
+                <div class="col-md-10">
+                    <div class="copyright-text">
+                        <p>
+                            Copyright © 2024 AI-copilot Design Company, All Rights Reserved.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  <script>
+  
+
+    fetch(`http://localhost:3000/api/waitlist`)
+      .then(response => response.json())
+      .then(data => {
+        const emailTable = document.getElementById('email-table').getElementsByTagName('tbody')[0];
+
+        data.forEach(item => {
+          const row = document.createElement('tr');
+          const emailCell = document.createElement('td');
+          emailCell.textContent = item.email;
+          row.appendChild(emailCell);
+          emailTable.appendChild(row);
+        });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        
+      });
+
+    
+  </script>
+</body>
+</html>

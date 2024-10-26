@@ -1,0 +1,27 @@
+{
+  "name": "praneeth-website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "homepage": "https://dedeepyasai.github.io/oco-backend",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "mongodb": "^6.10.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d .",
+    "build": "echo 'No build step required'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gh-pages": "^6.2.0",
+    "nodemon": "^3.1.7"
+  }
+}
