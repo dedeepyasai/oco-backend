@@ -17,4 +17,7 @@ services:
       - key: COLLECTION_NAME
         value: wailistEmails
     healthCheckPath: /health
-    autoDeploy: tr
+    autoDeploy: true
+    scaling:
+      minInstances: 1
+      maxInstances: 1
