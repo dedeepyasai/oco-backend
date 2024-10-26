@@ -7,7 +7,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // MongoDB connection details - These should be in .env file
-const mongoUrl = process.env.MONGODB_URI;
+const mongoUrl = "mongodb+srv://dattasai2511:JOytKbJ6V9PXyn08@waitlist-emails.mhip8.mongodb.net/?retryWrites=true&w=majority&appName=waitlist-emails";
 const dbName = process.env.DB_NAME;
 const collectionName = process.env.COLLECTION_NAME;
 
