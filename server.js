@@ -4,36 +4,14 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 10000;
-
-// Environment configuration
-const isDevelopment = process.env.NODE_ENV !== 'production';
-const API_URL = isDevelopment 
-    ? 'http://localhost:3000' 
-    : 'https://oco-ai-backend.onrender.com';
-
-console.log('Environment:', isDevelopment ? 'development' : 'production');
-console.log('API URL:', API_URL);
+const port = process.env.PORT || 3000;
 
 // MongoDB connection details
 const mongoUrl = "mongodb+srv://dattasai2511:JOytKbJ6V9PXyn08@waitlist-emails.mhip8.mongodb.net/?retryWrites=true&w=majority&appName=waitlist-emails";
 const dbName = 'OCO_DB';
 const collectionName = 'wailistEmails';
 
-// Middleware
-app.use(express.json());
-
-// CORS configuration
-app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type'],
-    optionsSuccessStatus: 200
-}));
-
-app.options('*', cors());
-
-// MongoDB Connection Pool with retry logic - THIS WAS MISSING
+// MongoDB Connection Pool with proper SSL config
 let client;
 async function connectDB() {
     try {
@@ -41,8 +19,17 @@ async function connectDB() {
             client = await MongoClient.connect(mongoUrl, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
-                serverSelectionTimeoutMS: 5000,
-                maxPoolSize: 10
+                serverApi: {
+                    version: '1',
+                    strict: true,
+                    deprecationErrors: true
+                },
+                // Add these SSL options
+                ssl: true,
+                tls: true,
+                tlsAllowInvalidCertificates: false,
+                maxPoolSize: 10,
+                serverSelectionTimeoutMS: 5000
             });
             console.log('Connected to MongoDB');
         }
@@ -52,6 +39,13 @@ async function connectDB() {
         throw error;
     }
 }
+
+// Test the connection immediately
+connectDB().then(() => {
+    console.log('Initial MongoDB connection successful');
+}).catch(err => {
+    console.error('Initial MongoDB connection failed:', err);
+});
 
 // Configuration endpoint
 app.get('/api/config', (req, res) => {
