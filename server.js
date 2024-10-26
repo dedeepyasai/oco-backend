@@ -6,12 +6,12 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-// MongoDB connection details
-const mongoUrl = "mongodb+srv://dattasai2511:JOytKbJ6V9PXyn08@waitlist-emails.mhip8.mongodb.net/?retryWrites=true&w=majority&appName=waitlist-emails";
+// MongoDB connection URL with different SSL settings
+const mongoUrl = "mongodb+srv://dattasai2511:JOytKbJ6V9PXyn08@waitlist-emails.mhip8.mongodb.net/?retryWrites=true&w=majority&appName=waitlist-emails&tls=true&tlsInsecure=true";
 const dbName = 'OCO_DB';
 const collectionName = 'wailistEmails';
 
-// MongoDB Connection Pool with proper SSL config
+// MongoDB Connection Pool
 let client;
 async function connectDB() {
     try {
@@ -24,14 +24,16 @@ async function connectDB() {
                     strict: true,
                     deprecationErrors: true
                 },
-                // Add these SSL options
                 ssl: true,
                 tls: true,
-                tlsAllowInvalidCertificates: false,
+                tlsAllowInvalidCertificates: true, // Only use this in development
                 maxPoolSize: 10,
-                serverSelectionTimeoutMS: 5000
+                serverSelectionTimeoutMS: 10000 // Increased timeout
             });
-            console.log('Connected to MongoDB');
+            
+            // Test the connection
+            await client.db('admin').command({ ping: 1 });
+            console.log('Connected successfully to MongoDB');
         }
         return client;
     } catch (error) {
@@ -40,11 +42,14 @@ async function connectDB() {
     }
 }
 
-// Test the connection immediately
-connectDB().then(() => {
-    console.log('Initial MongoDB connection successful');
-}).catch(err => {
-    console.error('Initial MongoDB connection failed:', err);
+// Add connection error handlers
+process.on('unhandledRejection', error => {
+    console.error('Unhandled Promise Rejection:', error);
+    if (client) {
+        client.close().then(() => {
+            console.log('MongoDB connection closed due to error');
+        });
+    }
 });
 
 // Configuration endpoint
