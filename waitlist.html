@@ -13,14 +13,6 @@
             min-height: calc(100vh - 200px);
         }
 
-        .stats-card {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
         .total-count {
             font-size: 1.2rem;
             color: #6c757d;
@@ -53,9 +45,42 @@
         .loading i {
             margin-right: 0.5rem;
         }
+
+        .error-message {
+            color: #dc3545;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .email-cell {
+            display: flex;
+            align-items: center;
+        }
+
+        .email-cell i {
+            margin-right: 0.75rem;
+            color: #6c757d;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 2rem;
+            color: #6c757d;
+        }
     </style>
+        <script src="env.js"></script>
+        <script src="config.js"></script>
 </head>
 <body>
+    <script>
+        isDevelopment = false; // Change to false for production
+
+function getApiUrl() {
+    return isDevelopment 
+        ? 'http://localhost:3000'
+        : 'https://oco-ai-backend.onrender.com';
+}
+</script>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="index.html">
@@ -92,46 +117,69 @@
     </div>
 
     <script>
-        // Fetch and display data
-        fetch('https://oco-ai-backend.onrender.com/api/waitlist')
-            .then(response => response.json())
-            .then(response => {
-                const { data, pagination } = response;
-                
-                // Update total count
-                document.getElementById('total-count').textContent = 
-                    `Total Subscribers: ${pagination.total}`;
 
-                // Populate table
-                const tbody = document.getElementById('waitlist-tbody');
-                tbody.innerHTML = '';
+        // Function to populate emails
+        function populateEmails(data) {
+            const tbody = document.getElementById('waitlist-tbody');
+            tbody.innerHTML = ''; // Clear loading state
 
-                data.forEach(item => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-envelope mr-2 text-muted"></i>
-                                ${item.email}
-                            </div>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('waitlist-tbody').innerHTML = `
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `
                     <tr>
-                        <td class="text-center text-danger">
-                            <i class="fas fa-exclamation-circle"></i>
-                            Error loading waitlist data. Please try again later.
+                        <td>
+                            <div class="empty-message">
+                                <i class="fas fa-inbox"></i>
+                                No emails in waitlist
+                            </div>
                         </td>
                     </tr>
                 `;
+                return;
+            }
+
+            // Update total count
+            document.getElementById('total-count').textContent = 
+                `Total Subscribers: ${data.length}`;
+
+            // Add email rows
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.innerHTML = `
+                    <div class="email-cell">
+                        <i class="fas fa-envelope"></i>
+                        ${item.email}
+                    </div>
+                `;
+                row.appendChild(cell);
+                tbody.appendChild(row);
+            });
+        }
+
+        const apiUrl = getApiUrl();
+        console.log('Using API URL:', apiUrl); // For debugging
+
+        // Fetch and display emails
+        fetch(`${apiUrl}/api/waitlist`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(response => {
+                if (!response.data) {
+                    throw new Error('No data received from server');
+                }
+                populateEmails(response.data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showError('There was an error loading the waitlist. Please try again later.');
             });
     </script>
 
+    <!-- Script imports -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

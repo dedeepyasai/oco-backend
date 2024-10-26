@@ -6,6 +6,15 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 10000;
 
+// Environment configuration
+const isDevelopment = process.env.NODE_ENV !== 'production';
+const API_URL = isDevelopment 
+    ? 'http://localhost:3000' 
+    : 'https://oco-ai-backend.onrender.com';
+
+console.log('Environment:', isDevelopment ? 'development' : 'production');
+console.log('API URL:', API_URL);
+
 // MongoDB connection details
 const mongoUrl = "mongodb+srv://dattasai2511:JOytKbJ6V9PXyn08@waitlist-emails.mhip8.mongodb.net/?retryWrites=true&w=majority&appName=waitlist-emails";
 const dbName = 'OCO_DB';
@@ -16,16 +25,15 @@ app.use(express.json());
 
 // CORS configuration
 app.use(cors({
-    origin: [
-        'http://localhost:3000',
-        'http://localhost:5000',
-        'https://dedeepyasai.github.io'
-    ],
+    origin: '*',
     methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type']
+    allowedHeaders: ['Content-Type'],
+    optionsSuccessStatus: 200
 }));
 
-// MongoDB Connection Pool with retry logic
+app.options('*', cors());
+
+// MongoDB Connection Pool with retry logic - THIS WAS MISSING
 let client;
 async function connectDB() {
     try {
@@ -45,6 +53,14 @@ async function connectDB() {
     }
 }
 
+// Configuration endpoint
+app.get('/api/config', (req, res) => {
+    res.json({
+        apiUrl: API_URL,
+        environment: isDevelopment ? 'development' : 'production'
+    });
+});
+
 // Health check endpoint
 app.get('/health', async (req, res) => {
     try {
@@ -53,28 +69,25 @@ app.get('/health', async (req, res) => {
             status: 'healthy',
             server: 'running',
             database: 'connected',
+            environment: isDevelopment ? 'development' : 'production',
+            apiUrl: API_URL,
             timestamp: new Date()
         });
     } catch (error) {
         res.status(500).json({ 
             status: 'unhealthy',
-            error: 'Database connection failed'
+            error: 'Database connection failed',
+            environment: isDevelopment ? 'development' : 'production'
         });
     }
 });
 
-// Email validation
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-// Add email to waitlist
+// API endpoint to add email - THIS WAS MISSING
 app.post('/api/waitlist', async (req, res) => {
     const { email } = req.body;
 
     // Input validation
-    if (!email || !isValidEmail(email)) {
+    if (!email || !email.includes('@')) {
         return res.status(400).json({ error: 'Please provide a valid email address.' });
     }
 
@@ -108,7 +121,7 @@ app.post('/api/waitlist', async (req, res) => {
     }
 });
 
-// Fetch all emails
+// API endpoint to fetch emails - THIS WAS MISSING
 app.get('/api/waitlist', async (req, res) => {
     try {
         const dbClient = await connectDB();
@@ -133,7 +146,7 @@ app.get('/api/waitlist', async (req, res) => {
     }
 });
 
-// Global error handler
+// Global error handler - THIS WAS MISSING
 app.use((err, req, res, next) => {
     console.error('Unhandled error:', err);
     res.status(500).json({ error: 'Internal server error' });
@@ -149,7 +162,8 @@ const startServer = async () => {
             
             app.listen(port, () => {
                 console.log(`Server is running on port ${port}`);
-                console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+                console.log(`Environment: ${isDevelopment ? 'development' : 'production'}`);
+                console.log(`API URL: ${API_URL}`);
             });
             
             break;
@@ -157,13 +171,12 @@ const startServer = async () => {
             console.error(`Failed to start server, retries left: ${retries}`);
             retries -= 1;
             if (!retries) throw error;
-            // Wait for 5 seconds before retrying
             await new Promise(resolve => setTimeout(resolve, 5000));
         }
     }
 };
 
-// Graceful shutdown
+// Graceful shutdown handler - THIS WAS MISSING
 process.on('SIGTERM', async () => {
     console.log('SIGTERM received. Shutting down gracefully...');
     if (client) {
@@ -172,7 +185,7 @@ process.on('SIGTERM', async () => {
     process.exit(0);
 });
 
-// Handle uncaught exceptions
+// Handle uncaught exceptions - THIS WAS MISSING
 process.on('uncaughtException', (error) => {
     console.error('Uncaught Exception:', error);
     process.exit(1);

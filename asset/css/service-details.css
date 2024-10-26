@@ -323,18 +323,14 @@ border-radius: 3%;
     cursor: not-allowed;
 }
 
-/* Message styles */
 .error-message,
 .success-message {
-    width: 100%;
     display: none;
-    font-size: 14px;
-    margin-top: 8px;
-    padding: 8px 12px;
-    border-radius: 4px;
-    text-align: left;
     align-items: center;
-    animation: fadeIn 0.3s ease-in-out;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    font-size: 14px;
 }
 
 .error-message {
@@ -347,35 +343,22 @@ border-radius: 3%;
     background-color: rgba(40, 167, 69, 0.1);
 }
 
-.success-message i, 
-.error-message i {
+.error-message i,
+.success-message i {
     margin-right: 8px;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-5px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.input-button-wrapper {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
-/* Responsive adjustments */
-@media (max-width: 576px) {
-    .input-button-wrapper {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .waitlist-btn {
-        width: 100%;
-    }
-
-    .waitlist-input {
-        width: 100%;
-    }
+.waitlist-btn {
+    white-space: nowrap;
 }
-  
+
+.waitlist-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}

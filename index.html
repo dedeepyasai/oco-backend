@@ -11,9 +11,20 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="./asset/css/style.css">
     <link rel="stylesheet" href="./asset/css/responsive.css">
+    <script src="env.js"></script>
+    <script src="config.js"></script>
 </head>
 
 <body>
+    <script>
+isDevelopment = true; // Change to false for production
+
+function getApiUrl() {
+    return isDevelopment 
+        ? 'http://localhost:3000'
+        : 'https://oco-ai-backend.onrender.com';
+}
+</script>
 
     <!-- Header Start  -->
     <section class="header ">
@@ -225,7 +236,20 @@ could churn.
         <script src="./asset/js/mixitup.min.js"></script>
     <script src="./asset/js/main.js"></script>
 
-    <script>
+<!-- Add this configuration section at the top of your body tag -->
+<script>
+    // For local development, set this to true
+    const isDevelopment = false; // Change to false for production
+
+    function getApiUrl() {
+        return isDevelopment 
+            ? 'http://localhost:3000'
+            : 'https://oco-ai-backend.onrender.com';
+    }
+</script>
+
+<!-- Your existing email submission code with updated API URL -->
+<script>
 function addEmailToWaitlist() {
     const emailInput = document.getElementById('emailInput');
     const email = emailInput.value.trim();
@@ -234,11 +258,12 @@ function addEmailToWaitlist() {
     const waitlistBtn = document.querySelector('.waitlist-btn');
     const inputWrapper = document.querySelector('.input-button-wrapper');
 
-    // Reset messages
+    // Reset messages and states
     errorMessage.textContent = '';
     errorMessage.style.display = 'none';
     successMessage.style.display = 'none';
-
+    waitlistBtn.disabled = false;
+    
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
@@ -257,15 +282,24 @@ function addEmailToWaitlist() {
     waitlistBtn.disabled = true;
     waitlistBtn.innerHTML = 'Loading... <i class="fas fa-spinner fa-spin"></i>';
 
-    fetch(`https://oco-ai-backend.onrender.com/api/waitlist`, {
+    // Get API URL
+    const apiUrl = isDevelopment 
+        ? 'http://localhost:3000' 
+        : 'https://oco-ai-backend.onrender.com';
+
+    fetch(`${apiUrl}/api/waitlist`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email: email })
+        body: JSON.stringify({ email })
     })
     .then(async response => {
         const data = await response.json();
+        
+        // Reset messages
+        errorMessage.style.display = 'none';
+        successMessage.style.display = 'none';
         
         if (response.ok) {
             // Success case - new registration
@@ -274,44 +308,45 @@ function addEmailToWaitlist() {
             successMessage.style.display = 'flex';
             
             // Fade out input and button
-            inputWrapper.style.opacity = '0';
-            inputWrapper.style.transition = 'opacity 0.5s ease';
-            setTimeout(() => {
-                inputWrapper.style.display = 'none';
-            }, 500);
+            fadeOutElement(inputWrapper);
+        } else if (response.status === 409) {
+            // Existing email case
+            emailInput.value = '';
+            successMessage.innerHTML = '<i class="fas fa-check-circle"></i> Don\'t worry, you are in our waitlist. You will get future updates';
+            successMessage.style.display = 'flex';
+            
+            // Fade out input and button
+            fadeOutElement(inputWrapper);
         } else {
-            if (response.status === 409) {
-                // Existing email case
-                successMessage.innerHTML = '<i class="fas fa-check-circle"></i> Don\'t worry, you are in our waitlist. You will get future updates';
-                successMessage.style.display = 'flex';
-                emailInput.value = '';
-                
-                // Fade out input and button
-                inputWrapper.style.opacity = '0';
-                inputWrapper.style.transition = 'opacity 0.5s ease';
-                setTimeout(() => {
-                    inputWrapper.style.display = 'none';
-                }, 500);
-            } else {
-                errorMessage.textContent = data.error || 'Failed to join waitlist. Please try again.';
-                errorMessage.style.display = 'flex';
-            }
+            throw new Error(data.error || 'Failed to join waitlist');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        errorMessage.textContent = 'Network error. Please try again later.';
+        errorMessage.textContent = error.message || 'Network error. Please try again later.';
         errorMessage.style.display = 'flex';
-    })
-    .finally(() => {
-        // Reset button state if error occurred
-        if (errorMessage.style.display === 'flex') {
-            waitlistBtn.disabled = false;
-            waitlistBtn.innerHTML = 'Join the waitlist <i class="fas fa-angle-right"></i>';
-        }
+        successMessage.style.display = 'none';
+        
+        // Reset button state
+        waitlistBtn.disabled = false;
+        waitlistBtn.innerHTML = 'Join the waitlist <i class="fas"></i>';
     });
+    waitlistBtn.innerHTML = 'Join the waitlist <i class="fas"></i>'
 }
-    </script>
+
+// Helper function for fading out elements
+function fadeOutElement(element) {
+    if (!element) return;
+    
+    element.style.opacity = '0';
+    element.style.transition = 'opacity 0.5s ease';
+    
+    setTimeout(() => {
+        element.style.display = 'none';
+    }, 500);
+}
+
+</script>
     
 
 </body>
