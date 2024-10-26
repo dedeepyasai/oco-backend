@@ -13,8 +13,8 @@ const collectionName = process.env.COLLECTION_NAME;
 
 // For deployment, this should be your GitHub Pages URL in production
 const clientURL = process.env.NODE_ENV === 'production' 
-  ? 'https://[your-github-username].github.io'
-  : 'http://localhost:3000';
+  ? 'https://dedeepyasai.github.io'
+  : 'https://oco-ai-backend.onrender.com';
 
 // Middleware
 app.use(express.json());

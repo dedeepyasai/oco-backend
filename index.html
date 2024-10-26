@@ -257,7 +257,7 @@ function addEmailToWaitlist() {
     waitlistBtn.disabled = true;
     waitlistBtn.innerHTML = 'Loading... <i class="fas fa-spinner fa-spin"></i>';
 
-    fetch(`http://localhost:3000/api/waitlist`, {
+    fetch(`hhttps://oco-ai-backend.onrender.com/api/waitlist`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
