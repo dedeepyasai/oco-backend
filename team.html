@@ -46,6 +46,146 @@
         font-size: 12px;
     }
 }
+
+.team-section {
+    padding: 40px 0;
+    background: transparent;
+}
+
+.section-title {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 50px;
+}
+
+.section-title .highlight {
+    color: #0066cc;
+}
+
+/* Team Grid */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px;
+}
+
+/* Team Card */
+.team-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-content {
+    padding: 30px;
+}
+
+/* Member Info Section */
+.member-info {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.member-image {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+}
+
+.member-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Member Header */
+.member-header h3 {
+    font-size: 20px;
+    color: #333;
+    margin: 0 0 5px 0;
+    font-weight: 600;
+}
+
+.member-header p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.role {
+    color: #0066cc;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.credentials, .education {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Member Bio */
+.member-bio {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.member-bio p {
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .member-info {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .member-image {
+        margin: 0 auto;
+        width: 100px;
+        height: 100px;
+    }
+
+    .member-header {
+        text-align: center;
+    }
+}
+
+/* Optional: Add animation */
+.team-card {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Stagger animation for cards */
+.team-card:nth-child(1) { animation-delay: 0.1s; }
+.team-card:nth-child(2) { animation-delay: 0.3s; }
+.team-card:nth-child(3) { animation-delay: 0.5s; }
     </style>
 </head>
 <body>
@@ -117,63 +257,75 @@
 
 <!-- Team Section Start  -->
 
-<section class="team section-padding">
-	<div class="container">
-		<div class="row"> 
-			<h2 class="text-center w-100 service-heading">Our Expert
-				<span class="highlight">Team</span> 
-			</h2>
-		</div>
-	</div>
-	
-	<div class="container mt-5">
-		<div class="row">
-			<div class="col-lg-4 col-md-6">
-				<div class="team-card text-center">
-					<img src="./asset/image/team1.png" alt="" class="img-fluid"/>
-					<h3> Shaimak Reddy</h3>
-					<p>  Co-Founder, CTO </p>
-                    <p> Senior Product manager – Samsung</p>
-                    <p> IIT Bombay (AIR - 3), IIM Bangalore</p>
-					<p> Shaimak Reddy is an IIT Bombay graduate with an MBA from IIM Bangalore, specializing 
-                        in AI-driven product management and data analytics. He has led AI initiatives at Samsung, 
-                        overseeing products with over 300M users worldwide. His expertise lies in utilizing data to 
-                        drive strategic decisions, enhance user engagement, and scale innovative solutions. 
-                        Shaimak is passionate about building technologies that deliver business impact and create 
-                        long-term value</p>
-				</div>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<div class="team-card text-center">
-					<img src="./asset/image/team1.png" alt="" class="img-fluid"/>
-					<h3> Chaitanya Kota                    </h3>
-					<p>  Co-Founder, COO </p>
-                    <p>ML Engineer, Aero Space Engineering</p>
-                    <p>(Ex ISRO), Data Consultant (Wharton)</p>
-					<p>Chaitanya Kota is an analytics expert on a mission to empower businesses with actionable 
-                        insights. Holding a Master's in Data Science and leveraging his background as a former 
-                        rocket scientist at ISRO, he has learned to distill complex data into strategic decision
-                        making tools. With experience driving data-driven initiatives at The Wharton School and 
-                        Unqork, Chaitanya is passionate about building data-driven platforms that optimize and 
-                        transform businesses, harnessing data to create lasting value</p>
-				</div>
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<div class="team-card text-center">
-					<img src="./asset/image/team1.png" alt="" class="img-fluid"/>
-					<h3> Sai Praneeth</h3>
-					<p>  Co-Founder, CEO </p>
-                    <p>Lead Consultant – LTIMindtree</p>
-                    <p>Babson MBA (USA)</p>
-					<p> Sai is an experienced management professional in the tech industry, holds an MBA degree 
-                        from Babson (USA). He played a pivotal role in building the products that enrich the user 
-                        experience and have a meaningful impact.  Sai is passionate about building a sustainable 
-                        business that can progress the world by 20x. </p>
-				</div>
-			</div>
-			
-		</div>
-	</div>
+
+<section class="team-section">
+    <div class="container">
+        <h2 class="section-title text-center">
+            Our Expert <span class="highlight">Team</span>
+        </h2>
+        
+        <div class="team-grid">
+            <!-- Team Member Card 1 -->
+            <div class="team-card">
+                <div class="card-content">
+                    <div class="member-info">
+                        <div class="member-image">
+                            <img src="./assets/team1.jpg" alt="Shaimak Reddy" />
+                        </div>
+                        <div class="member-header">
+                            <h3>Shaimak Reddy</h3>
+                            <p class="role">Co-Founder, CTO</p>
+                            <p class="credentials">Senior Product manager – Samsung</p>
+                            <p class="education">IIT Bombay (AIR - 3), IIM Bangalore</p>
+                        </div>
+                    </div>
+                    <div class="member-bio">
+                        <p>Shaimak Reddy is an IIT Bombay graduate with an MBA from IIM Bangalore, specializing in AI-driven product management and data analytics. He has led AI initiatives at Samsung, overseeing products with over 300M users worldwide. His expertise lies in utilizing data to drive strategic decisions, enhance user engagement, and scale innovative solutions. Shaimak is passionate about building technologies that deliver business impact and create long-term value.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member Card 2 -->
+            <div class="team-card">
+                <div class="card-content">
+                    <div class="member-info">
+                        <div class="member-image">
+                            <img src="./assets/team2.PNG" alt="Chaitanya Kota" />
+                        </div>
+                        <div class="member-header">
+                            <h3>Chaitanya Kota</h3>
+                            <p class="role">Co-Founder, COO</p>
+                            <p class="credentials">ML Engineer, Aero Space Engineering</p>
+                            <p class="education">(Ex ISRO), Data Consultant (Wharton)</p>
+                        </div>
+                    </div>
+                    <div class="member-bio">
+                        <p>Chaitanya Kota is an analytics expert on a mission to empower businesses with actionable insights. Holding a Master's in Data Science and leveraging his background as a former rocket scientist at ISRO, he has learned to distill complex data into strategic decision-making tools. With experience driving data-driven initiatives at The Wharton School and Unqork, Chaitanya is passionate about building data-driven platforms that optimize and transform businesses, harnessing data to create lasting value.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member Card 3 -->
+            <div class="team-card">
+                <div class="card-content">
+                    <div class="member-info">
+                        <div class="member-image">
+                            <img src="./assets/team3.PNG" alt="Sai Praneeth" />
+                        </div>
+                        <div class="member-header">
+                            <h3>Sai Praneeth</h3>
+                            <p class="role">Co-Founder, CEO</p>
+                            <p class="credentials">Lead Consultant – LTIMindtree</p>
+                            <p class="education">Babson MBA (USA)</p>
+                        </div>
+                    </div>
+                    <div class="member-bio">
+                        <p>Sai is an experienced management professional in the tech industry, holds an MBA degree from Babson (USA). He played a pivotal role in building the products that enrich the user experience and have a meaningful impact. Sai is passionate about building a sustainable business that can progress the world by 20x.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <!-- Team Section End  -->
 
@@ -182,36 +334,6 @@
 
     <section id="footer" class="footer">
         <div class="container">
-            <!-- <div class="row">
-                <div class="col-md-6">
-                    <div class="footer-widget-1">
-                        <img src="./assets/OCO.ai.png" alt="">
-                        <p>
-                            AI copilot for Customer Success Teams
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="footer-widget-3">
-                        <h3>OCO.AI</h3>
-                        <ul>
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">Team</a></li>
-                            <li><a href="#">Testimonial</a></li>
-                            <li><a href="#">FAQ's</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="footer-widget-4">
-                        <h3>Contact Us</h3>
-                        <p>
-                            info@oco.ai <br> Boston USA
-                        </p>
-                    </div>
-                </div>
-            </div> -->
 			
 			<div class="row" style="border-top: 1px solid #ddd; padding-top: 10px;">
                 <div class="col-md-12">
