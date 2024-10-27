@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 10000;
+const moment = require('moment-timezone');
 
 // MongoDB connection details
 const mongoUrl = "mongodb+srv://dattasai2511:JOytKbJ6V9PXyn08@waitlist-emails.mhip8.mongodb.net/?retryWrites=true&w=majority&appName=waitlist-emails";
@@ -86,7 +87,7 @@ app.post('/api/waitlist', async (req, res) => {
         // Add new email
         const result = await collection.insertOne({ 
             email,
-            createdAt: new Date(),
+            createdAt: moment().tz('America/New_York').format(),
             source: req.headers.origin || 'direct'
         });
 

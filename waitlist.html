@@ -7,110 +7,197 @@
     <link rel="icon" type="image/svg+xml" href="./assets/favicon.PNG">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone.min.js"></script>
     <style>
+        body {
+            background: linear-gradient(270deg, #E1EFF5 0%, #E3F4FA 50%, #EEF8FB 100%);
+            min-height: 100vh;
+        }
+
         .dashboard-container {
             padding: 2rem;
-            background-color: #f8f9fa;
-            min-height: calc(100vh - 200px);
+        }
+
+        .page-title {
+            color: #333;
+            margin-bottom: 2rem;
+            font-weight: 600;
         }
 
         .total-count {
-            font-size: 1.2rem;
-            color: #6c757d;
+            color: #666;
             margin-bottom: 1rem;
+            font-size: 1.1rem;
         }
 
         .waitlist-table {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
         }
 
         .waitlist-table th {
             background-color: #f8f9fa;
             border-bottom: 2px solid #dee2e6;
-            padding: 1rem;
+            padding: 1.2rem 1rem;
+            font-weight: 600;
+            color: #444;
         }
 
         .waitlist-table td {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #6c757d;
-        }
-
-        .loading i {
-            margin-right: 0.5rem;
-        }
-
-        .error-message {
-            color: #dc3545;
-            text-align: center;
             padding: 1rem;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
         }
 
         .email-cell {
             display: flex;
             align-items: center;
+            gap: 12px;
         }
 
         .email-cell i {
-            margin-right: 0.75rem;
-            color: #6c757d;
+            color: #0066cc;
+            font-size: 1.1rem;
+        }
+
+        .timestamp {
+            color: #666;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .timestamp i {
+            margin-right: 6px;
+            color: #888;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .loading i {
+            margin-right: 8px;
+            color: #0066cc;
+        }
+
+        .sortable {
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            padding-right: 25px !important;
+        }
+
+        .sortable::after {
+            content: '↕️';
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            opacity: 0.5;
+        }
+
+        .sortable.asc::after {
+            content: '↑';
+            opacity: 1;
+            color: #0066cc;
+        }
+
+        .sortable.desc::after {
+            content: '↓';
+            opacity: 1;
+            color: #0066cc;
+        }
+
+        .sortable:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Highlight sorted column */
+        .sorted-column {
+            background-color: rgba(0, 102, 204, 0.05);
         }
 
         .empty-message {
             text-align: center;
-            padding: 2rem;
-            color: #6c757d;
+            padding: 3rem;
+            color: #666;
         }
-        body {
-            background: linear-gradient(270deg, #E1EFF5 0%, #E3F4FA 50%, #EEF8FB 100%);
-            min-height: 100vh;
+
+        .empty-message i {
+            font-size: 2rem;
+            color: #ccc;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 2rem;
+            color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .waitlist-row {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1rem;
+            }
+
+            .waitlist-table {
+                margin: 0 -1rem;
+                border-radius: 0;
+            }
         }
     </style>
-        <script src="env.js"></script>
-        <script src="config.js"></script>
-
 </head>
 <body>
-    <script>
-        isDevelopment = false; // Change to false for production
-
-function getApiUrl() {
-    return isDevelopment 
-        ? 'http://localhost:3000'
-        : 'https://oco-ai-backend.onrender.com';
-}
-</script>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="index.html">
                 <img src="./assets/OCO.ai.png" alt="OCO.AI" height="40">
             </a>
-
         </div>
     </nav>
 
     <div class="dashboard-container">
         <div class="container">
-            <h4 class="mb-0" style="text-align:center">Waitlist Emails</h4>
-            <div class="total-count" id="total-count"></div>
+            <h4 class="page-title text-center">Waitlist Emails</h4>
+            <div class="total-count text-center" id="total-count"></div>
             
             <div class="waitlist-table table-responsive">
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Email Address</th>
+                            <th class="sortable" data-sort="email">Email Address</th>
+                            <th class="sortable" data-sort="time">Time Registered (EST)</th>
                         </tr>
                     </thead>
                     <tbody id="waitlist-tbody">
                         <tr>
-                            <td>
+                            <td colspan="2">
                                 <div class="loading">
                                     <i class="fas fa-spinner fa-spin"></i>
                                     Loading emails...
@@ -124,16 +211,45 @@ function getApiUrl() {
     </div>
 
     <script>
+            let waitlistData = []; // Store the data globally
+        let currentSort = {
+            column: 'time',
+            direction: 'desc'
+        };
 
-        // Function to populate emails
-        function populateEmails(data) {
+        function formatDateTime(timestamp) {
+            if (!timestamp) return 'N/A';
+            return moment(timestamp)
+                .tz('America/New_York')
+                .format('MM-DD-YYYY HH:mm');
+        }
+
+        function sortData(data, column, direction) {
+            return [...data].sort((a, b) => {
+                let compareA, compareB;
+                
+                if (column === 'email') {
+                    compareA = a.email.toLowerCase();
+                    compareB = b.email.toLowerCase();
+                } else if (column === 'time') {
+                    compareA = new Date(a.createdAt || 0);
+                    compareB = new Date(b.createdAt || 0);
+                }
+
+                if (compareA < compareB) return direction === 'asc' ? -1 : 1;
+                if (compareA > compareB) return direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        function populateEmails(data, sort = { column: 'time', direction: 'desc' }) {
             const tbody = document.getElementById('waitlist-tbody');
-            tbody.innerHTML = ''; // Clear loading state
+            tbody.innerHTML = '';
 
             if (!data || data.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td>
+                        <td colspan="2">
                             <div class="empty-message">
                                 <i class="fas fa-inbox"></i>
                                 No emails in waitlist
@@ -144,51 +260,91 @@ function getApiUrl() {
                 return;
             }
 
-            // Update total count
             document.getElementById('total-count').textContent = 
                 `Total Subscribers: ${data.length}`;
 
-            // Add email rows
-            data.forEach(item => {
+            // Sort data
+            const sortedData = sortData(data, sort.column, sort.direction);
+
+            // Update sort indicators
+            document.querySelectorAll('th.sortable').forEach(th => {
+                th.classList.remove('asc', 'desc');
+                const sortType = th.dataset.sort;
+                if (sortType === sort.column) {
+                    th.classList.add(sort.direction);
+                }
+            });
+
+            // Populate table with sorted data
+            sortedData.forEach((item, index) => {
                 const row = document.createElement('tr');
-                const cell = document.createElement('td');
-                cell.innerHTML = `
-                    <div class="email-cell">
-                        <i class="fas fa-envelope"></i>
-                        ${item.email}
-                    </div>
+                row.className = 'waitlist-row';
+                row.style.animationDelay = `${index * 0.05}s`;
+                
+                row.innerHTML = `
+                    <td class="${sort.column === 'email' ? 'sorted-column' : ''}">
+                        <div class="email-cell">
+                            <i class="fas fa-envelope"></i>
+                            ${item.email}
+                        </div>
+                    </td>
+                    <td class="timestamp ${sort.column === 'time' ? 'sorted-column' : ''}">
+                        <i class="far fa-clock"></i>
+                        ${formatDateTime(item.createdAt)}
+                    </td>
                 `;
-                row.appendChild(cell);
                 tbody.appendChild(row);
             });
         }
 
-        const apiUrl = getApiUrl();
-        console.log('Using API URL:', apiUrl); // For debugging
+        // Initialize sorting functionality
+        function initializeSorting() {
+            document.querySelectorAll('th.sortable').forEach(th => {
+                th.addEventListener('click', () => {
+                    const column = th.dataset.sort;
+                    let direction = 'asc';
 
-        // Fetch and display emails
+                    // Toggle sort direction if clicking the same column
+                    if (column === currentSort.column) {
+                        direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+                    }
+
+                    currentSort = { column, direction };
+                    populateEmails(waitlistData, currentSort);
+                });
+            });
+        }
+
+        // Fetch and display data
+        const isDevelopment = false;
+        const apiUrl = isDevelopment ? 'http://localhost:3000' : 'https://oco-ai-backend.onrender.com';
+
         fetch(`${apiUrl}/api/waitlist`)
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
+                if (!response.ok) throw new Error('Network response was not ok');
                 return response.json();
             })
             .then(response => {
-                if (!response.data) {
-                    throw new Error('No data received from server');
-                }
-                populateEmails(response.data);
+                if (!response.data) throw new Error('No data received');
+                waitlistData = response.data; // Store the data
+                populateEmails(waitlistData, currentSort);
             })
             .catch(error => {
                 console.error('Error:', error);
-                showError('There was an error loading the waitlist. Please try again later.');
+                document.getElementById('waitlist-tbody').innerHTML = `
+                    <tr>
+                        <td colspan="2">
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-circle"></i>
+                                Failed to load waitlist data. Please try again later.
+                            </div>
+                        </td>
+                    </tr>
+                `;
             });
-    </script>
 
-    <!-- Script imports -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        // Initialize sorting when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeSorting);
+    </script>
 </body>
 </html>
