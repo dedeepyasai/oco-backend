@@ -10,202 +10,298 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone.min.js"></script>
     <style>
-        body {
-            background: linear-gradient(270deg, #E1EFF5 0%, #E3F4FA 50%, #EEF8FB 100%);
-            min-height: 100vh;
-        }
+       body {
+    background: linear-gradient(270deg, #E1EFF5 0%, #E3F4FA 50%, #EEF8FB 100%);
+    min-height: 100vh;
+}
 
-        .dashboard-container {
-            padding: 2rem;
-        }
+.dashboard-container {
+    padding: 1rem;
+    min-height: calc(100vh - 60px); /* Adjust based on your navbar height */
+}
 
-        .page-title {
-            color: #333;
-            margin-bottom: 2rem;
-            font-weight: 600;
-        }
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1rem;
+}
 
-        .total-count {
-            color: #666;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
+.page-title {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
 
-        .waitlist-table {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-        }
+.total-count {
+    color: #666;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
 
-        .waitlist-table th {
-            background-color: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
-            padding: 1.2rem 1rem;
-            font-weight: 600;
-            color: #444;
-        }
+.waitlist-table {
+    min-width: 100%;
+    background: white;
+    margin-bottom: 0;
+}
 
-        .waitlist-table td {
-            padding: 1rem;
-            border-bottom: 1px solid #eee;
-            vertical-align: middle;
-        }
+.waitlist-table th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    padding: 1.2rem 1rem;
+    font-weight: 600;
+    color: #444;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
 
-        .email-cell {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+.waitlist-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
 
-        .email-cell i {
-            color: #0066cc;
-            font-size: 1.1rem;
-        }
+/* Set minimum widths for columns */
+.waitlist-table th:first-child,
+.waitlist-table td:first-child {
+    min-width: 250px; /* Email column */
+}
 
-        .timestamp {
-            color: #666;
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
+.waitlist-table th:last-child,
+.waitlist-table td:last-child {
+    min-width: 150px; /* Time column */
+}
 
-        .timestamp i {
-            margin-right: 6px;
-            color: #888;
-        }
+.email-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: #666;
-        }
+.email-cell i {
+    color: #0066cc;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
 
-        .loading i {
-            margin-right: 8px;
-            color: #0066cc;
-        }
+.timestamp {
+    color: #666;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
 
-        .sortable {
-            cursor: pointer;
-            user-select: none;
-            position: relative;
-            padding-right: 25px !important;
-        }
+.timestamp i {
+    margin-right: 6px;
+    color: #888;
+}
 
-        .sortable::after {
-            content: '↕️';
-            position: absolute;
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 12px;
-            opacity: 0.5;
-        }
+.loading {
+    text-align: center;
+    padding: 3rem;
+    color: #666;
+}
 
-        .sortable.asc::after {
-            content: '↑';
-            opacity: 1;
-            color: #0066cc;
-        }
+.loading i {
+    margin-right: 8px;
+    color: #0066cc;
+}
 
-        .sortable.desc::after {
-            content: '↓';
-            opacity: 1;
-            color: #0066cc;
-        }
+.sortable {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding-right: 25px !important;
+}
 
-        .sortable:hover {
-            background-color: #f1f1f1;
-        }
+.sortable::after {
+    content: '↕️';
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    opacity: 0.5;
+}
 
-        /* Highlight sorted column */
-        .sorted-column {
-            background-color: rgba(0, 102, 204, 0.05);
-        }
+.sortable.asc::after {
+    content: '↑';
+    opacity: 1;
+    color: #0066cc;
+}
 
-        .empty-message {
-            text-align: center;
-            padding: 3rem;
-            color: #666;
-        }
+.sortable.desc::after {
+    content: '↓';
+    opacity: 1;
+    color: #0066cc;
+}
 
-        .empty-message i {
-            font-size: 2rem;
-            color: #ccc;
-            margin-bottom: 1rem;
-            display: block;
-        }
+.sortable:hover {
+    background-color: #f1f1f1;
+}
 
-        .error-message {
-            text-align: center;
-            padding: 2rem;
-            color: #dc3545;
-            background: rgba(220, 53, 69, 0.1);
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
+.sorted-column {
+    background-color: rgba(0, 102, 204, 0.05);
+}
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+.empty-message {
+    text-align: center;
+    padding: 3rem;
+    color: #666;
+}
 
-        .waitlist-row {
-            animation: fadeIn 0.3s ease-out forwards;
-        }
+.empty-message i {
+    font-size: 2rem;
+    color: #ccc;
+    margin-bottom: 1rem;
+    display: block;
+}
 
-        /* Responsive styles */
-        @media (max-width: 768px) {
-            .dashboard-container {
-                padding: 1rem;
-            }
+.error-message {
+    text-align: center;
+    padding: 2rem;
+    color: #dc3545;
+    background: rgba(220, 53, 69, 0.1);
+    border-radius: 8px;
+    margin: 1rem 0;
+}
 
-            .waitlist-table {
-                margin: 0 -1rem;
-                border-radius: 0;
-            }
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.waitlist-row {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Enhanced scrollbar */
+.table-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 0.5rem;
+    }
+
+    .table-wrapper {
+        margin: 0;
+        border-radius: 8px;
+    }
+
+    .waitlist-table th,
+    .waitlist-table td {
+        white-space: nowrap;
+    }
+
+    .page-title {
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+    }
+
+    .total-count {
+        margin-bottom: 0.75rem;
+    }
+
+    /* Add fade indicator for horizontal scroll */
+    .table-wrapper::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 20px;
+        background: linear-gradient(to left, white, transparent);
+        pointer-events: none;
+    }
+}
+
+        /* Optional: Add smooth scroll behavior */
+        .table-wrapper {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <section class="header">
+        <!-- Header Navigation Start  -->
+        <div class="container header-nav">
+            <div class="row">
+                <div class="col-md-6">
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light main-menu fixed-top">
+                        <div class="container">
+                            <a href="index.html" class="navbar-brand">
+                                <img src="./assets/OCO.ai.png" alt=" OCO.AI">
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="page-title text-center">Waitlist Emails</h4>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="index.html">
-                <img src="./assets/OCO.ai.png" alt="OCO.AI" height="40">
+                <img src="./assets/OCO.ai.png" alt="OCO.AI" height="40" width="50%">
             </a>
         </div>
-    </nav>
+    </nav> -->
 
     <div class="dashboard-container">
         <div class="container">
             <h4 class="page-title text-center">Waitlist Emails</h4>
             <div class="total-count text-center" id="total-count"></div>
             
-            <div class="waitlist-table table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th class="sortable" data-sort="email">Email Address</th>
-                            <th class="sortable" data-sort="time">Time Registered (EST)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="waitlist-tbody">
-                        <tr>
-                            <td colspan="2">
-                                <div class="loading">
-                                    <i class="fas fa-spinner fa-spin"></i>
-                                    Loading emails...
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="table-wrapper"> <!-- Added wrapper -->
+                <div class="waitlist-table table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th class="sortable" data-sort="email">Email Address</th>
+                                <th class="sortable" data-sort="time">Time Registered (EST)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="waitlist-tbody">
+                            <tr>
+                                <td colspan="2">
+                                    <div class="loading">
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                        Loading emails...
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -345,6 +441,43 @@
 
         // Initialize sorting when DOM is loaded
         document.addEventListener('DOMContentLoaded', initializeSorting);
+
+        document.addEventListener('DOMContentLoaded', function() {
+    const tableWrapper = document.querySelector('.table-wrapper');
+    
+    // Check if horizontal scroll is needed
+    function checkScroll() {
+        if (tableWrapper.scrollWidth > tableWrapper.clientWidth) {
+            tableWrapper.classList.add('has-scroll');
+        } else {
+            tableWrapper.classList.remove('has-scroll');
+        }
+    }
+
+    // Initial check and on resize
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+
+    // Optional: Add pull-to-refresh functionality
+    let touchStart = 0;
+    tableWrapper.addEventListener('touchstart', function(e) {
+        touchStart = e.touches[0].clientY;
+    });
+
+    tableWrapper.addEventListener('touchmove', function(e) {
+        const touch = e.touches[0].clientY;
+        const diff = touch - touchStart;
+
+        if (diff > 50 && tableWrapper.scrollTop === 0) {
+            tableWrapper.classList.add('refreshing');
+            // Implement your refresh logic here
+        }
+    });
+
+    tableWrapper.addEventListener('touchend', function() {
+        tableWrapper.classList.remove('refreshing');
+    });
+});
     </script>
 </body>
 </html>
