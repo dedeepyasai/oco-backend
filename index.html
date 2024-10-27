@@ -268,6 +268,131 @@
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
 }
+
+.work-process {
+    padding: 60px 0;
+}
+
+.feature-row {
+    margin-bottom: 60px;
+    align-items: center;
+}
+
+/* Image Styles */
+.image-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-wrapper {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.feature-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Content Styles */
+.project-discussion {
+    padding: 20px;
+}
+
+.project-discussion h2 {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.project-discussion p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature-list li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 12px;
+    color: #555;
+}
+
+.feature-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #0066cc;
+    font-size: 20px;
+    line-height: 1;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .feature-row {
+        text-align: center;
+    }
+
+    .image-col {
+        order: -1; /* Makes image appear first on mobile */
+        margin-bottom: 30px;
+    }
+
+    .image-wrapper {
+        max-width: 300px; /* Smaller max-width for mobile */
+        padding: 0 20px; /* Add some padding on mobile */
+    }
+
+    .project-discussion {
+        padding: 0 20px;
+    }
+
+    .feature-list {
+        text-align: left; /* Keep list items left-aligned */
+        max-width: 280px;
+        margin: 0 auto;
+    }
+
+    .project-discussion h2 {
+        font-size: 24px;
+    }
+}
+
+/* Optional: Add animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feature-row {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Optional: Add hover effects */
+.image-wrapper {
+    transition: transform 0.3s ease;
+}
+
+.image-wrapper:hover {
+    transform: translateY(-5px);
+}
     </style>
 </head>
 
@@ -413,47 +538,44 @@ function getApiUrl() {
             </div>
         </div>
     </section> 
-        <section class="work-process section-padding">
+    <section class="work-process section-padding">
         <div class="container">
-            <div class="row mt-5">
-                <div class="col-md-5">
-                    <img src="./assets/revenue leakage.png" alt="Client discussion" class="img img-fluid">
+            <!-- First Feature -->
+            <div class="row mt-5 feature-row">
+                <div class="col-md-5 image-col">
+                    <div class="image-wrapper">
+                        <img src="./assets/revenue leakage.png" alt="Revenue Leakage" class="feature-image">
+                    </div>
                 </div>
-                <div class="col-md-7 centralize">
+                <div class="col-md-7 content-col">
                     <div class="project-discussion">
-                        <h2>Stop the Revenue Leakage</span> </h2>
-                        <p>
-                            By leveraging our AI model, we identify risk customers who 
-        could churn.
-                        </p>
-                        <ul>
-                            <li> Integrate Data</li>
-                            <li> AI Model (Analyze)</li>
-                            <li> Identify Risk Customer</li>
+                        <h2>Stop the Revenue Leakage</h2>
+                        <p>By leveraging our AI model, we identify risk customers who could churn.</p>
+                        <ul class="feature-list">
+                            <li>Integrate Data</li>
+                            <li>AI Model (Analyze)</li>
+                            <li>Identify Risk Customer</li>
                         </ul>
-                        <!-- <button class="waitlist-btn"><a href="#headerbanner" style="color: black;cursor: pointer;">Let's Join the waitlist <i class="fas"></i></a></button> -->
                     </div>
                 </div>
             </div>
-
-            
-            <div class="row mt-5">
-                <div class="col-md-5">
-                    <img src="./assets/manual tasks.png" alt="Client discussion" class="img img-fluid">
+    
+            <!-- Second Feature -->
+            <div class="row mt-5 feature-row">
+                <div class="col-md-5 image-col">
+                    <div class="image-wrapper">
+                        <img src="./assets/manual tasks.png" alt="Manual Tasks" class="feature-image">
+                    </div>
                 </div>
-                <div class="col-md-7 centralize">
+                <div class="col-md-7 content-col">
                     <div class="project-discussion">
-                        <h2> Eliminate manual tasks</span> </h2>
-                        <p>
-                            Utilize our AI to automate
-                        </p>
-                        <ul>
-                            <li>  AI Note taker (In-built)</li>
-                            <li>  Automation of QBRs</li>
-                            <li> Summarized reports
-                            </li>
+                        <h2>Eliminate manual tasks</h2>
+                        <p>Utilize our AI to automate</p>
+                        <ul class="feature-list">
+                            <li>AI Note taker (In-built)</li>
+                            <li>Automation of QBRs</li>
+                            <li>Summarized reports</li>
                         </ul>
-                        <!-- <button class="waitlist-btn"><a href="#headerbanner" style="color: black;cursor: pointer;">Let's Join the waitlist <i class="fas"></i></a></button> -->
                     </div>
                 </div>
             </div>
