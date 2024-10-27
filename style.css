@@ -310,3 +310,105 @@ footer {
     opacity: 0.7;
     cursor: not-allowed;
 }
+
+
+.features-section {
+    padding: 60px 0;
+    background: transparent;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+    margin-bottom: 20px;
+}
+
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #E1F5FE;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.icon-circle i {
+    font-size: 24px;
+    color: #03A9F4;
+}
+
+.feature-card h3 {
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.feature-card p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .feature-card {
+        margin-bottom: 30px;
+    }
+    
+    .feature-card:last-child {
+        margin-bottom: 0;
+    }
+}
+
+/* Custom shadow for depth effect */
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px;
+    pointer-events: none;
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.3)
+    );
+}
+
+/* Optional: Add animation on hover */
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+    50% {
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    100% {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+}
+
+.feature-card:hover {
+    animation: pulseGlow 2s infinite;
+}
