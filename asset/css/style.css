@@ -20,7 +20,7 @@ a:hover{
     text-decoration: none;
 }
 .section-padding{
-    padding: 70px;
+    padding: 40px;
     background: linear-gradient(270deg, #E1EFF5 0%, #E3F4FA 50%, #EEF8FB 100%);
     /* min-height: 100vh; */
 }
@@ -413,7 +413,7 @@ section.footer.section-padding {
     color: #39b0f0;
     transition: all 0.5s ease-in-out;
 }
-.copyright-text p {font-family: 'Roboto',sans-serif;font-size: 18px;font-weight: 400;color: #64707D;line-height: 40px;}
+.copyright-text p {font-family: 'Roboto',sans-serif;font-size: 18px;font-weight: 400;color: #64707D;line-height: 40px; }
 .messenger i {
     color: #fff;
     background: #FFBA00;
