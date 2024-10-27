@@ -14,12 +14,16 @@ const collectionName = 'wailistEmails';
 
 // Middleware
 app.use(express.json());
+app.options('*', cors());
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
     optionsSuccessStatus: 200
 }));
+
+
 
 // MongoDB Connection Pool
 let client;
