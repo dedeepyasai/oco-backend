@@ -21,7 +21,8 @@ a:hover{
 }
 .section-padding{
     padding: 40px;
-    background: linear-gradient(270deg, #E1EFF5 0%, #E3F4FA 50%, #EEF8FB 100%);
+    background-color: #E6F7FF;
+
     /* min-height: 100vh; */
 }
 /* Adding Fonts*/
@@ -370,6 +371,7 @@ a.carousel-control-next.testimonial-control {
 } */
 section.footer.section-padding {
     padding-bottom: 10px;
+ 
 }
 .footer-widget-1 p {
     font-family: 'Roboto',sans-serif;
