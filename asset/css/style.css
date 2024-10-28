@@ -431,6 +431,7 @@ section.footer.section-padding {
     width: 100% !important;
 }
 .contact-header .container.header-content{
+    background: linear-gradient(270deg, #E1EFF5 0%, #E3F4FA 50%, #EEF8FB 100%);
     max-height: 400px;
 }
 
