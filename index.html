@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OCO.AI</title>
+    <title>OCOSPHERE.AI</title>
     <!-- Adding Stylesheets -->
     <link rel="icon" type="image/svg+xml" href="./assets/favicon.PNG">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css">
@@ -394,6 +394,29 @@
 .image-wrapper:hover {
     transform: translateY(-5px);
 }
+.logo {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.logo-text {
+    color: #2479c9;
+}
+
+.logo-highlight {
+    background: #39b0f0;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+.logo-domain {
+    color: #ED7D31;
+    font-weight: 500;
+}
     </style>
 </head>
 
@@ -417,7 +440,9 @@ function getApiUrl() {
                     <nav class="navbar navbar-expand-lg navbar-light bg-light main-menu fixed-top ">
                         <div class="container">
                             <a href="index.html" class="navbar-brand">
-                                <img src="./assets/OCO.ai.png" alt=" OCO.AI">
+                                <div class="logo">
+                                    <span class="logo-text">Oco<span class="logo-highlight">Sphere</span><span class="logo-domain">.ai</span></span>
+                                </div>
                             </a>
                             <button class="navbar-toggler" data-toggle="collapse" data-target="#beeToggler">
                                 <span class="navbar-toggler-icon"></span>
@@ -625,7 +650,7 @@ function getApiUrl() {
                 <div class="col-md-12">
                     <div class="copyright-text">
                         <p>
-                            Copyright © 2024 OCO.AI , All Rights Reserved.
+                            Copyright © 2024 OcoSphere.ai, All Rights Reserved.
                         </p>
                     </div>
                 </div>
